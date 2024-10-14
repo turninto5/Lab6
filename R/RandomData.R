@@ -1,3 +1,8 @@
+#' RandomData
+#' @description This file aims to generate input data for knapsack
+#' @name RandomData
+#' @export
+
 RNGversion(min(as.character(getRversion()),"3.5.3"))
 
 ##old sampler used for backward compatibility

@@ -10,13 +10,13 @@
 #' @examples
 #' v <-c(2,2,6,5,4)
 #' w <- c(6,3,5,4,6)
-#' outcome1 <- dynamicProgramming(x = as.data.frame(cbind(w, v)), W = 10)
-#' outcome2 <- dynamicProgramming(x = knapsack_objects[1:8,], W = 3500)
+#' outcome1 <- dynamicProgramming(x = as.data.frame(cbind(w, v)), W = 10,  fast = FALSE)
+#' outcome2 <- dynamicProgramming(x = knapsack_objects[1:8,], W = 3500, fast = FALSE)
 #' @export
 #' @name dynamicProgramming
 
 source("./R/RandomData.R")
-library(Rccp)
+library(Rcpp)
 
 dynamicProgramming <- function(x = NA, W = NA, fast = NA){
     stopifnot(is.logical(fast))
@@ -26,39 +26,22 @@ dynamicProgramming <- function(x = NA, W = NA, fast = NA){
     value <- x$v
     ssq <- matrix(data = 0, nrow = length(weight) + 1, ncol = W + 1) # solution of sub-question
 
-    if(fast){
-        cppFunction('void knapsack(std::vector<double> weight, std::vector<double> value, int w){
-          int n = weight.size();
-          int m = value.size();
-          double ssp[n][w];
-          for (int i = 0; i <= n; i++){
-            for (int j = 0; j < m; j++){
-              ssp[i][j] = 0;
-            }
-          }
-          # initialize ssp
-          
-          for(int i = 1; i <= n; i++){
-            for(int j = w; j > 0; j--){
-              ssq[i][j] = max(ssq[i-1][j], ssq[i-1][j-weight[i]] + values[i])
-            }
-          }
-          vector<int> outcome;
-          for(int i = 0; i <= n; i++){
-            if(ssq[i][w+1] > ssq[i-1][w+1]){
-              outcome.push_back(i);
-              w -= weight[i];
-            }
-          }
-        }')
-    }
-
-
-
     for (i in 1:length(weight)){
-        for (j in seq(from = W + 1, to = weight[i])){
-           ssq[i + 1, j] <- max(ssq[i, j], ssq[i, j - weight[i]] + value[i])
+      for (j in seq(from = W + 1, to = weight[i] + 1)){
+        # we used profvis to analyse the lowest efficient part, and found this part can be replaced by C++
+        if(fast){
+          cppFunction({
+            'int updateStatus(double not_load, double load, double value){
+                return std::max(not_load, load + value);
+            }'
+          })
+          ssq[i + 1, j] <- updateStatus(ssq[i,j], ssq[i, j - weight[i]], value[i])
         }
+        else{
+          ssq[i + 1, j] <- max(ssq[i, j], ssq[i, j - weight[i]] + value[i])
+        }
+
+      }
     }
     elements <- vector()
     for (i in seq(from = nrow(ssq), to = 2)){
@@ -69,8 +52,9 @@ dynamicProgramming <- function(x = NA, W = NA, fast = NA){
     }
     outcome <- list(value = max(ssq), elements = elements)
     return (outcome)
-
 }
+
+
 
 
 

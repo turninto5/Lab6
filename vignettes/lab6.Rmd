@@ -1,0 +1,14 @@
+---
+title: "lab6"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{lab6}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+# Introduction
+
+# Example
+```{r setup}
+library(lab6)
+```
