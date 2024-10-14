@@ -1,11 +1,20 @@
-Package: Lab6
+Package: lab5
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Lab5
+Version: 1.0
+Date: 2024-10-14
+Author: Trace and Christian
+Maintainer: <qincu578@student.liu.se"> <chjon338@student.liu.se> 
+Description: This package provides solutions in different ways to knapsack.
+License: GPL-3
 Encoding: UTF-8
-LazyData: true
+Depends: R (>= 3.5.0)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+NeedsCompilation: no
+Packaged: 2024-10-14 15:04:00 UTC; kbart
+Imports:
+    methods
+RoxygenNote: 7.3.2
+VignetteBuilder: knitr

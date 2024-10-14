@@ -1,16 +1,20 @@
- RNGversion(min(as.character(getRversion()),"3.5.3"))
+#' Dynamic Programming
+#' @description
+#' This functions provides a solution to solve knapsack via dynamic programming
+#' @return This function returns the maximum value that can fit in a defined backpack capacity.
+#' @param
+#' x Parameter x is input, should be in type of data frame, which contains 2 vector weights and values of items.
+#' W Parameter W is the capacity of the bag, should be numeric.
+#' @return This function returns a list, which contains elements which are selected and the maximum value the bag contain under its capacity.
+#' @examples
+#' v <-c(2,2,6,5,4)
+#' w <- c(6,3,5,4,6)
+#' outcome1 <- dynamicProgramming(x = as.data.frame(cbind(w, v)), W = 10)
+#' outcome2 <- dynamicProgramming(x = knapsack_objects[1:8,], W = 3500)
+#' @export
+#' @name dynamicProgramming
 
- ##old sampler used for backward compatibility
- ## suppressWarnings() can be used so that the above warning is not displayed
- set.seed(42, kind = "Mersenne-Twister", normal.kind = "Inversion")
- n <- 2000
- knapsack_objects <- data.frame(w=sample(1:3500, size = n, replace = TRUE),
-                                v=runif(n = n, 0, 10000))
-
-
-# print(knapsack_objects[1:8,])
-
-
+source("./R/RandomData.R")
 
 dynamicProgramming <- function(x = NA, W = NA){
     stopifnot(is.data.frame(x))
@@ -37,6 +41,5 @@ dynamicProgramming <- function(x = NA, W = NA){
 }
 
 
-outcome <- dynamicProgramming(x = knapsack_objects[1:8,], W = 3500)
-print(outcome)
+
 
