@@ -1,4 +1,4 @@
-Package: lab5
+Package: lab6
 Type: Package
 Title: Lab5
 Version: 1.0
@@ -17,6 +17,9 @@ Config/testthat/edition: 3
 NeedsCompilation: no
 Packaged: 2024-10-14 15:04:00 UTC; kbart
 Imports:
-    methods
+    methods,
+    Rcpp
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
+LinkingTo:
+    Rcpp
