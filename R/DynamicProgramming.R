@@ -1,26 +1,27 @@
 #' Dynamic Programming
 #' @description
 #' This functions provides a solution to solve knapsack via dynamic programming
-#' @return This function returns the maximum value that can fit in a defined backpack capacity.
-#' @param
-#' x Parameter x is input, should be in type of data frame, which contains 2 vector weights and values of items.
-#' W Parameter W is the capacity of the bag, should be numeric.
-#' fast Parameter fast is in type of boolean and aims to improve performance via C++.
+#' @param x Parameter x is input, should be in type of data frame, which contains 2 vector weights and values of items.
+#' @param W Parameter W is the capacity of the bag, should be numeric.
+#' @param fast Parameter fast is in type of boolean and aims to improve performance via C++.
 #' @return This function returns a list, which contains elements which are selected and the maximum value the bag contain under its capacity.
 #' @examples
 #' v <-c(2,2,6,5,4)
 #' w <- c(6,3,5,4,6)
+#' knapsack_objects <- randomData(data_length = 8)
 #' outcome1 <- dynamicProgramming(x = as.data.frame(cbind(w, v)), W = 10,  fast = FALSE)
-#' outcome2 <- dynamicProgramming(x = knapsack_objects[1:8,], W = 3500, fast = FALSE)
-#' @export
+#' outcome2 <- dynamicProgramming(x = knapsack_objects, W = 3500, fast = FALSE)
+#' @export dynamicProgramming
 #' @name dynamicProgramming
+#' @import Rcpp
 
-source("./R/RandomData.R")
-library(Rcpp)
+
 
 dynamicProgramming <- function(x = NA, W = NA, fast = NA){
     stopifnot(is.logical(fast))
     stopifnot(is.data.frame(x))
+    stopifnot("v" %in% colnames(x))
+    stopifnot("w" %in% colnames(x))
     stopifnot(is.numeric(W))
     weight <- x$w
     value <- x$v
@@ -30,11 +31,6 @@ dynamicProgramming <- function(x = NA, W = NA, fast = NA){
       for (j in seq(from = W + 1, to = weight[i] + 1)){
         # we used profvis to analyse the lowest efficient part, and found this part can be replaced by C++
         if(fast){
-          cppFunction({
-            'int updateStatus(double not_load, double load, double value){
-                return std::max(not_load, load + value);
-            }'
-          })
           ssq[i + 1, j] <- updateStatus(ssq[i,j], ssq[i, j - weight[i]], value[i])
         }
         else{
@@ -57,5 +53,19 @@ dynamicProgramming <- function(x = NA, W = NA, fast = NA){
 
 
 
+#' updateStatus
+#' @description
+#' This function aims to improve the performance in R implemented by C++.
+#' @param not_load A numeric variable.
+#' @param load A numeric variable.
+#' @param value A numeric variable.
+#' @return A numeric element.
+#' @export
+
+updateStatus <- cppFunction({
+  'int updateStatus(double not_load, double load, double value){
+                return std::max(not_load, load + value);
+            }'
+})
 
 

@@ -5,12 +5,17 @@
 \alias{randomData}
 \title{RandomData}
 \usage{
-randomData()
+randomData(data_length = NA)
+}
+\arguments{
+\item{data_length}{A numeric variable, default NA.}
+}
+\value{
+A data frame who contains w for weights and v for values.
 }
 \description{
-This file aims to generate input data for knapsack
+This file aims to generate input data for knapsack.
 }
 \examples{
-knapsack_objects <- randomData()
-
+knapsack_objects <- randomData(data_length = 8)
 }

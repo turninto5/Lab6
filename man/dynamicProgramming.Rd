@@ -3,14 +3,17 @@
 \name{dynamicProgramming}
 \alias{dynamicProgramming}
 \title{Dynamic Programming}
+\usage{
+dynamicProgramming(x = NA, W = NA, fast = NA)
+}
 \arguments{
-\item{x}{Parameter x is input, should be in type of data frame, which contains 2 vector weights and values of items.
-W Parameter W is the capacity of the bag, should be numeric.
-fast Parameter fast is in type of boolean and aims to improve performance via C++.}
+\item{x}{Parameter x is input, should be in type of data frame, which contains 2 vector weights and values of items.}
+
+\item{W}{Parameter W is the capacity of the bag, should be numeric.}
+
+\item{fast}{Parameter fast is in type of boolean and aims to improve performance via C++.}
 }
 \value{
-This function returns the maximum value that can fit in a defined backpack capacity.
-
 This function returns a list, which contains elements which are selected and the maximum value the bag contain under its capacity.
 }
 \description{
@@ -19,6 +22,7 @@ This functions provides a solution to solve knapsack via dynamic programming
 \examples{
 v <-c(2,2,6,5,4)
 w <- c(6,3,5,4,6)
+knapsack_objects <- randomData(data_length = 8)
 outcome1 <- dynamicProgramming(x = as.data.frame(cbind(w, v)), W = 10,  fast = FALSE)
-outcome2 <- dynamicProgramming(x = knapsack_objects[1:8,], W = 3500, fast = FALSE)
+outcome2 <- dynamicProgramming(x = knapsack_objects, W = 3500, fast = FALSE)
 }

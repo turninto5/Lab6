@@ -17,9 +17,6 @@ Config/testthat/edition: 3
 NeedsCompilation: no
 Packaged: 2024-10-14 15:04:00 UTC; kbart
 Imports:
-    methods,
     Rcpp
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
-LinkingTo:
-    Rcpp
