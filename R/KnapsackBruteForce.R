@@ -1,4 +1,4 @@
-#' knapsack_brute_force
+#' brute_force_knapsack
 #'
 #' @description This class uses the Kolada API
 #' @param x data.frame x with two variables v and w  
@@ -7,11 +7,11 @@
 #' @examples
 #' instance <- bf()
 #' @export knapsack_brute_force
-knapsack_brute_force <- function(x = NA, W = NA){
+brute_force_knapsack <- function(x = NA, W = NA){
     stopifnot(is.data.frame(x))
     stopifnot("v" %in% colnames(x))
     stopifnot("w" %in% colnames(x))
-    stopifnot(is.numeric(W))
+    stopifnot(is.numeric(W)& W>0)
     n <- length(x$v) 
     subsets <- getAllSubsets(n)
     maxSubset <- list(value = 0, elements = c())
