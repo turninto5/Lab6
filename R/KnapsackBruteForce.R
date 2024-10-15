@@ -6,7 +6,7 @@
 #' @return returns the maximum knapsack value and which elements
 #' @examples
 #' output <- brute_force_knapsack(list(v <- c(1,2,3), w <- (4,5,6)), W = 10)
-#' @export knapsack_brute_force
+#' @export brute_force_knapsack
 brute_force_knapsack <- function(x = NA, W = NA){
     stopifnot(is.data.frame(x))
     stopifnot("v" %in% colnames(x))
