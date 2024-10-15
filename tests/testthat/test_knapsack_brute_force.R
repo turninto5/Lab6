@@ -24,6 +24,8 @@ test_that("Optimization is correct", {
 
 test_that("Execution time is large", {
     execution_time <- system.time({brute_force_knapsack(x = knapsack_objects[1:16,], W = 3500)})
+    print("This is the speed of the brute force with N=16")
+    print(execution_time)
     expect_true(execution_time["elapsed"]>0.05)
 })
 

@@ -1,11 +1,11 @@
 #' brute_force_knapsack
 #'
-#' @description This class uses the Kolada API
+#' @description This Function solves the knapsack poblem by brute force
 #' @param x data.frame x with two variables v and w  
 #' @param W The variable is the knapsack size
 #' @return returns the maximum knapsack value and which elements
 #' @examples
-#' instance <- bf()
+#' output <- brute_force_knapsack(list(v <- c(1,2,3), w <- (4,5,6)), W = 10)
 #' @export knapsack_brute_force
 brute_force_knapsack <- function(x = NA, W = NA){
     stopifnot(is.data.frame(x))
