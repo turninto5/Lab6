@@ -5,7 +5,7 @@
 #' @param W The variable is the knapsack size
 #' @return returns the maximum knapsack value and which elements
 #' @examples
-#' output <- greedy_knapsack(list(v <- c(1,2,3), w <- (4,5,6)), W = 10)
+#' output <- greedy_knapsack(list(v <- c(1,2,3), w <- c(4,5,6)), W = 10)
 #' @export greedy_knapsack
 #' 
 greedy_knapsack <- function(x = NA, W = NA){
