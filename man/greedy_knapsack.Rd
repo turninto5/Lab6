@@ -18,5 +18,5 @@ returns the maximum knapsack value and which elements
 This Function solves the knapsack poblem by the greedy algorithm
 }
 \examples{
-output <- greedy_knapsack(list(v <- c(1,2,3), w <- (4,5,6)), W = 10)
+output <- greedy_knapsack(list(v <- c(1,2,3), w <- c(4,5,6)), W = 10)
 }
