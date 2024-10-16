@@ -5,13 +5,13 @@
 #' @return returns the maximum knapsack value and which elements
 #' @examples
 #' knapsack_objects <- randomData(data_length = 8)
-#' knapsack_brute_force(x = knapsack_objects, W = 3500)
-#' @export knapsack_brute_force
-knapsack_brute_force <- function(x = NA, W = NA){
+#' brute_force_knapsack(x = knapsack_objects, W = 3500)
+#' @export brute_force_knapsack
+brute_force_knapsack <- function(x = NA, W = NA){
     stopifnot(is.data.frame(x))
     stopifnot("v" %in% colnames(x))
     stopifnot("w" %in% colnames(x))
-    stopifnot(is.numeric(W))
+    stopifnot(is.numeric(W) & W > 0)
     n <- length(x$v)
     subsets <- getAllSubsets(n)
     maxSubset <- list(value = 0, elements = c())

@@ -7,6 +7,7 @@
 #' @examples
 #' output <- greedy_knapsack(list(v <- c(1,2,3), w <- (4,5,6)), W = 10)
 #' @export greedy_knapsack
+#' 
 greedy_knapsack <- function(x = NA, W = NA){
     stopifnot(is.data.frame(x))
     stopifnot("v" %in% colnames(x))
