@@ -18,5 +18,6 @@ returns the maximum knapsack value and which elements
 This Function solves the knapsack poblem by the greedy algorithm
 }
 \examples{
-output <- greedy_knapsack(list(v <- c(1,2,3), w <- c(4,5,6)), W = 10)
+knapsack_objects <- randomData(data_length = 8)
+output <- greedy_knapsack(knapsack_objects, W = 2000)
 }
