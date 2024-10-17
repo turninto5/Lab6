@@ -40,7 +40,7 @@ Firstly, we decreased the time of locating the elements in the matrix, implement
 
 
 ### Before optimization
-```{r before optimization}
+```{r dynamicProgramming before optimization}
 start <- proc.time()
 outcome2 <- dynamicProgramming(x = knapsack_objects, W = 35000, fast = FALSE)
 end <- proc.time()
@@ -49,7 +49,7 @@ print(end-start)
 
 ### After optimization
 
-```{r after optimization}
+```{r dynamicProgramming after optimization}
 library(Rcpp)
 source("../R/DynamicProgramming.R")
 start <- proc.time()
@@ -66,7 +66,7 @@ Step 1: Identify getting the first n bits is a clear optimization area /n
 Step 2: Pre-allocating [1:n] to a variable outside the loop improved the performance to 240ms /n
 Step 3: This entire thing is useless since we'll get the indexes below of all ones. Doesn't matter if it is a 64 bit variable or a e.g. 23 bit variable /n
 removing this operation entirely improved the speed to 230ms /n
-```{r before optimization}
+```{r brute_force_knapsack before optimization}
 getAllSubsets <- function(n) {
   subsets <- list()
   for (i in 0:(2^n - 1)) {
@@ -80,7 +80,7 @@ getAllSubsets <- function(n) {
 
 
 ### After optimization
-```{r after optimization}
+```{r brute_force_knapsack after optimization}
 getAllSubsets <- function(n) {
   subsets <- list()
   for (i in 0:(2^n - 1)) {
