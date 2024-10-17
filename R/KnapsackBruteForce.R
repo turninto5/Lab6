@@ -45,8 +45,19 @@ brute_force_knapsack <- function(x = NA, W = NA){
 #' @return list of all subsets
 getAllSubsets <- function(n) {
   subsets <- list()
+  optimized <- TRUE
   for (i in 0:(2^n - 1)) {
-    bits <- as.integer(intToBits(i))[1:n]
+    if(optimized == TRUE){
+      bits <- as.integer(intToBits(i))
+    }else{
+      # after running profvis this getAllSubsets was the bottleneck
+      # This operation took the longest and the entire function call took 270ms
+      # Step 1: Identify getting the first n bits is a clear optimization area
+      # Step 2: Pre-allocating [1:n] to a variable outside the loop improved the performance to 240ms
+      # Step 3: This entire thing is useless since we'll get the indexes below of all ones. Doesn't matter if it is a 64 bit variable or a e.g. 23 bit variable
+      # removing this operation entirely improved the speed to 230ms  
+      bits <- as.integer(intToBits(i))[1:n]
+    }
     subset <- which(bits == 1)
     subsets[[i + 1]] <- subset
   }
