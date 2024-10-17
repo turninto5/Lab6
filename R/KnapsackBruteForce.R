@@ -26,15 +26,6 @@ brute_force_knapsack <- function(x = NA, W = NA){
         maxSubset$elements <- subset
       }
     }
-    # print("Weight")
-    # print(sum(x$w[maxSubset$elements]))
-    # print(x$v[maxSubset$elements])
-    # optimal solution 1
-    # print(x$w[c(5,8)])
-    # print(x$v[c(5,8)])
-    # optimal solution 2
-    # print(x$w[c(3,8)])
-    # print(x$v[c(3,8)])
     return(maxSubset)
 }
 

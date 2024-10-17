@@ -11,20 +11,35 @@ vignette: >
 library(lab6)
 ```
 
-# Introduction of optimization
+# Lab6 Introduction
+This package contains 3 methodson how to solve or estimate the solution to the knapsack problem.
+- dynamicProgramming
+- greedy_knapsack
+- brute_force_knapsack
 
-## Initialize the input
+# 1.1.2 Brute force search
+Question: How much time does it takes to run the algorithm for n = 16 objects?
+Answer: 0.170s on my computer, see test-case "brute force: Execution time is large"
+# 1.1.3 Dynamic programming
+Question: How much time does it takes to run the algorithm for n = 500 objects?
+Answer: 
+# 1.1.4 Greedy heuristic
+Question: How much time does it takes to run the algorithm for n = 1000000 objects?
+Answer: 0.311s on my computer, see test-case "Greedy: Execution time is large"
+# 1.1.6  Profile your code and optimize your code
+## dynamicProgramming
+### Initialize the input
 
 ```{r input initialization}
 knapsack_objects <- randomData(data_length = 500)
 ```
 
-## Optimize via regular measure
+### Optimize via regular measure
 
 Firstly, we decreased the time of locating the elements in the matrix, implementing that by create variable named temp to store it.
 
-## Before optimization
 
+### Before optimization
 ```{r before optimization}
 start <- proc.time()
 outcome2 <- dynamicProgramming(x = knapsack_objects, W = 35000, fast = FALSE)
@@ -32,7 +47,7 @@ end <- proc.time()
 print(end-start)
 ```
 
-## After optimization
+### After optimization
 
 ```{r after optimization}
 library(Rcpp)
@@ -41,4 +56,38 @@ start <- proc.time()
 outcome2 <- dynamicProgramming(x = knapsack_objects, W = 35000, fast = TRUE)
 end <- proc.time()
 print(end-start)
+```
+
+## Optimize brute_force_knapsack
+### Before optimization
+After running profvis this getAllSubsets was identified as a bottleneck /n
+This operation took the longest and the entire function call took 270ms /n
+Step 1: Identify getting the first n bits is a clear optimization area /n
+Step 2: Pre-allocating [1:n] to a variable outside the loop improved the performance to 240ms /n
+Step 3: This entire thing is useless since we'll get the indexes below of all ones. Doesn't matter if it is a 64 bit variable or a e.g. 23 bit variable /n
+removing this operation entirely improved the speed to 230ms /n
+```{r before optimization}
+getAllSubsets <- function(n) {
+  subsets <- list()
+  for (i in 0:(2^n - 1)) {
+    bits <- as.integer(intToBits(i))[1:n]
+    subset <- which(bits == 1)
+    subsets[[i + 1]] <- subset
+  }
+  return(subsets)
+}
+```
+
+
+### After optimization
+```{r after optimization}
+getAllSubsets <- function(n) {
+  subsets <- list()
+  for (i in 0:(2^n - 1)) {
+    bits <- as.integer(intToBits(i))
+    subset <- which(bits == 1)
+    subsets[[i + 1]] <- subset
+  }
+  return(subsets)
+}
 ```

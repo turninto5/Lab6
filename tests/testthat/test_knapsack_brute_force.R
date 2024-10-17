@@ -21,7 +21,7 @@ test_that("Optimization is correct", {
     expect_equal(output$elements, c(3,6,8))
 })
 
-test_that("Execution time is large", {
+test_that("brute force: Execution time is large", {
     knapsack_objects <- randomData(16)
     execution_time <- system.time({brute_force_knapsack(x = knapsack_objects, W = 3500)})
     print("This is the speed of the brute force with N=16")
