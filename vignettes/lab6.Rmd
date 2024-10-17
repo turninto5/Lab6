@@ -6,10 +6,10 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
 ```{r setup}
 library(lab6)
 ```
-
 
 # Introduction of optimization
 
@@ -20,6 +20,7 @@ knapsack_objects <- randomData(data_length = 500)
 ```
 
 ## Optimize via regular measure
+
 Firstly, we decreased the time of locating the elements in the matrix, implementing that by create variable named temp to store it.
 
 ## Before optimization
@@ -34,6 +35,8 @@ print(end-start)
 ## After optimization
 
 ```{r after optimization}
+library(Rcpp)
+source("../R/DynamicProgramming.R")
 start <- proc.time()
 outcome2 <- dynamicProgramming(x = knapsack_objects, W = 35000, fast = TRUE)
 end <- proc.time()

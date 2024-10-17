@@ -61,10 +61,11 @@ dynamicProgramming <- function(x = NA, W = NA, fast = NA){
 #' updateStatus
 #' @description
 #' This function aims to improve the performance in R implemented by C++.
-#' @param not_load A numeric variable.
-#' @param load A numeric variable.
-#' @param value A numeric variable.
-#' @return A numeric element.
+#' @param ssq A numeric matrix to represents solutions of subproblems
+#' @param weights A numeric variable represents weights .
+#' @param values A numeric vector to values.
+#' @param w A numeric variable represents the volume of the bag.
+
 
 
 

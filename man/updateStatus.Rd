@@ -4,17 +4,16 @@
 \alias{updateStatus}
 \title{updateStatus}
 \usage{
-updateStatus(not_load, load, value)
+updateStatus(ssq, weights, values, w)
 }
 \arguments{
-\item{not_load}{A numeric variable.}
+\item{ssq}{A numeric matrix to represents solutions of subproblems}
 
-\item{load}{A numeric variable.}
+\item{weights}{A numeric variable represents weights .}
 
-\item{value}{A numeric variable.}
-}
-\value{
-A numeric element.
+\item{values}{A numeric vector to values.}
+
+\item{w}{A numeric variable represents the volume of the bag.}
 }
 \description{
 This function aims to improve the performance in R implemented by C++.
