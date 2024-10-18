@@ -12,26 +12,24 @@ library(lab6)
 ```
 
 # Lab6 Introduction
-This package contains 3 methodson how to solve or estimate the solution to the knapsack problem.
-- dynamicProgramming
-- greedy_knapsack
-- brute_force_knapsack
+
+This package contains 3 methodson how to solve or estimate the solution to the knapsack problem. - dynamicProgramming - greedy_knapsack - brute_force_knapsack
 
 # 1.1.2 Brute force search
-Question: How much time does it takes to run the algorithm for n = 16 objects?
-Answer: 0.170s on my computer, see test-case "brute force: Execution time is large"
+
+Question: How much time does it takes to run the algorithm for n = 16 objects? Answer: 0.170s on my computer, see test-case "brute force: Execution time is large"
 
 # 1.1.3 Dynamic programming
-Question: How much time does it takes to run the algorithm for n = 500 objects?
-Answer: 
+
+Question: How much time does it takes to run the algorithm for n = 500 objects? Answer: 28.69s on Trace's laptop, after optimization via C++, it decreased to 0,31s
 
 # 1.1.4 Greedy heuristic
-Question: How much time does it takes to run the algorithm for n = 1000000 objects?
-Answer: 0.311s on my computer, see test-case "Greedy: Execution time is large"
 
-# 1.1.6  Profile your code and optimize your code
+Question: How much time does it takes to run the algorithm for n = 1000000 objects? Answer: 0.311s on my computer, see test-case "Greedy: Execution time is large"
 
-## dynamicProgramming
+# 1.1.6 Profile your code and optimize your code
+
+## Dynamic programming
 
 ### Initialize the input
 
@@ -41,10 +39,52 @@ knapsack_objects <- randomData(data_length = 500)
 
 ### Optimize via regular measure
 
-Firstly, we decreased the time of locating the elements in the matrix, implementing that by create variable named temp to store it.
-
+Firstly, we decreased the time of locating the elements in the matrix, implementing that by create variable named temp to store it. Before optimization, it spent 9.6s with length(x) = 500.
 
 ### Before optimization
+
+```{r}
+dynamicProgramming <- function(x = NA, W = NA, fast = NA){
+    stopifnot(is.logical(fast))
+    stopifnot(is.data.frame(x))
+    stopifnot("v" %in% colnames(x))
+    stopifnot("w" %in% colnames(x))
+    stopifnot(is.numeric(W))
+    weights <- x$w
+    values <- x$v
+    ssq <- matrix(data = 0, nrow = length(weights) + 1, ncol = W + 1) # solution of sub-question
+
+    for (i in 1:length(weights)){
+      value <- values[i]
+      weight <- weights[i]
+      temp <- ssq[i+1, ]
+      temp_front <- ssq[i, ]
+
+      if (W > weights[i]){
+        for (j in seq(from = W + 1, to = weights[i] + 1)){
+          ssq[i+1, j] <- max(ssq[i,j], ssq[i,j - weight] + values[i])
+        }
+      }
+    }
+
+
+    elements <- vector()
+    for (i in seq(from = nrow(ssq), to = 2)){
+      if (ssq[i, W+1] > ssq[i-1, W+1]){
+        elements <- append(elements, i-1)
+        W <- W - weights[i-1]
+      }
+    }
+    outcome <- list(value = max(ssq), elements = elements)
+    return (outcome)
+}
+start <- proc.time()
+outcome0 <- dynamicProgramming(x = knapsack_objects, W = 35000, fast = FALSE)
+end <- proc.time()
+print(end-start)
+```
+
+### After first step optimization
 
 ```{r dynamicProgramming before optimization}
 start <- proc.time()
@@ -53,7 +93,9 @@ end <- proc.time()
 print(end-start)
 ```
 
-### After optimization
+### After optimization via C++
+
+Subsequently, I optimized it by C++, I replaced the part of updating array of solutions of subquestions.
 
 ```{r dynamicProgramming after optimization}
 library(Rcpp)
@@ -67,12 +109,9 @@ print(end-start)
 ## Optimize brute_force_knapsack
 
 ### Before optimization
-After running profvis this getAllSubsets was identified as a bottleneck <br>
-This operation took the longest and the entire function call took 270ms <br>
-Step 1: Identify getting the first n bits is a clear optimization area <br>
-Step 2: Pre-allocating [1:n] to a variable outside the loop improved the performance to 240ms <br>
-Step 3: This entire thing is useless since we'll get the indexes below of all ones. Doesn't matter if it is a 64 bit variable or a e.g. 23 bit variable <br>
-removing this operation entirely improved the speed to 230ms <br>
+
+After running profvis this getAllSubsets was identified as a bottleneck <br> This operation took the longest and the entire function call took 270ms <br> Step 1: Identify getting the first n bits is a clear optimization area <br> Step 2: Pre-allocating [1:n] to a variable outside the loop improved the performance to 240ms <br> Step 3: This entire thing is useless since we'll get the indexes below of all ones. Doesn't matter if it is a 64 bit variable or a e.g. 23 bit variable <br> removing this operation entirely improved the speed to 230ms <br>
+
 ```{r brute_force_knapsack before optimization}
 getAllSubsets <- function(n) {
   subsets <- list()
@@ -86,6 +125,7 @@ getAllSubsets <- function(n) {
 ```
 
 ### After optimization
+
 ```{r brute_force_knapsack after optimization}
 getAllSubsets <- function(n) {
   subsets <- list()
